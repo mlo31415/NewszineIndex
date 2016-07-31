@@ -3,6 +3,7 @@ import tkinter
 from tkinter import filedialog
 import os
 import Helpers
+import operator
 
 # Get the directory containing the lst files to be analyzed.
 root = tkinter.Tk()
@@ -24,6 +25,7 @@ filelist = [f for f in filelist if os.path.splitext(f)[1].lower() == ".lst"]
 # A column definition line comprised of a semicolon-delimited list of column headings.  It always begins with "Issue"
 # A blank line
 # One line for each issue, each comprised of a semicolon-delimited list of data for that fanzine which matches the headings
+fanzineList=[]
 for name in filelist:
     f = open(name)
     print("\nOpening "+name)
@@ -90,14 +92,37 @@ for name in filelist:
         fanzineLine=[f.strip() for f in fanzineLine]
 
         # Let's figure out the date
-        year=0
-        month=0
-        day=0
-        # Start by looking for a year column
         if (yearCol != None):
-            year=Helpers.InterpretYear(fanzineLine[yearCol])
+            if yearCol < len(fanzineLine):
+                year=Helpers.InterpretYear(fanzineLine[yearCol])
+            else:
+                print("***FanzineLine too short: yearCol="+str(yearCol)+" Fanzineline='"+fanzineLine+"'")
         if (monthCol != None):
-            month=Helpers.InterpretMonth(fanzineLine[monthCol])
+            if monthCol < len(fanzineLine):
+                month=Helpers.InterpretMonth(fanzineLine[monthCol])
+        else:
+            print("***FanzineLine too short: yearCol=" + str(monthCol) + " Fanzineline='" + fanzineLine + "'")
 
+        fanzineList.append((year, month, fanzineLine))
         print("FanzineDef:"+l)
+
+    # Ok, hopefully we have a list of all the fanzines.  Sort it and print it out
+    fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
+    year=0
+    month=0
+    for f in fanzineList:
+        line=""
+        if f[0] != year:
+            year=f[0]
+            line=str(year)
+        else:
+            line="     "
+        if f[1] != month:
+            month-f[1]
+            line=line+"  "+str(month)
+        else:
+            line=line+"     "
+        line=line+"  "+str(f[2])
+        print(line)
+
 
