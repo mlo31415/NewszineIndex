@@ -63,9 +63,32 @@ for name in filelist:
             continue
 
         # Is this the columdef line?
-        if len(columnDefs) == 0 and len(l) > 5 and l[:6].lower() == "issue;":
+        if len(columnDefs) == 0 and len(l) > 5 and (l[:6].lower() == "issue;" or l[:6].lower() == "title;"):
             columnDefs = l.lower().replace(";", " ").split()     # Split the columndefs line on spans of semicolon & whitespace
-            print("ColumDef: "+l)
+            try:
+                yearCol = columnDefs.index("year")
+            except ValueError:
+                yearCol=None
+            try:
+                monthCol = columnDefs.index("month")
+            except ValueError:
+                monthCol=None
+            try:
+                dayCol = columnDefs.index("day")
+            except ValueError:
+                dayCol=None
+            print("ColumnDef: "+l)
+            print("ColumnDef: YearCol="+str(yearCol)+" MonthCol="+str(monthCol)+" DayCol="+str(dayCol))
             continue
 
+        # OK, it must be a fanzine line
+        # We need to analyze it based on the columdefs.
+        # Like columndefs, it's a single line of columns separated by spans of semicolons and whitespace, but in this case we want to preserve case
+        fanzineLine = l.replace(";", " ").split()
+
+        # Let's figure out the date
+        year=0
+        month=0
+        day=0
+        # Start by looking for a year column
         print("FanzineDef:"+l)
