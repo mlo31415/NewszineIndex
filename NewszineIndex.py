@@ -1,7 +1,8 @@
+
 import tkinter
 from tkinter import filedialog
 import os
-import re
+import Helpers
 
 # Get the directory containing the lst files to be analyzed.
 root = tkinter.Tk()
@@ -64,7 +65,8 @@ for name in filelist:
 
         # Is this the columdef line?
         if len(columnDefs) == 0 and len(l) > 5 and (l[:6].lower() == "issue;" or l[:6].lower() == "title;"):
-            columnDefs = l.lower().replace(";", " ").split()     # Split the columndefs line on spans of semicolon & whitespace
+            columnDefs = l.lower().split(";")     # Split the columndefs line on semicolon
+            columnDefs=[c.strip() for c in columnDefs]      # And remove whitespace padding
             try:
                 yearCol = columnDefs.index("year")
             except ValueError:
@@ -83,12 +85,19 @@ for name in filelist:
 
         # OK, it must be a fanzine line
         # We need to analyze it based on the columdefs.
-        # Like columndefs, it's a single line of columns separated by spans of semicolons and whitespace, but in this case we want to preserve case
-        fanzineLine = l.replace(";", " ").split()
+        # Like columndefs, it's a single line of columns separated by semicolons, but in this case we want to preserve case
+        fanzineLine = l.split(";")
+        fanzineLine=[f.strip() for f in fanzineLine]
 
         # Let's figure out the date
         year=0
         month=0
         day=0
         # Start by looking for a year column
+        if (yearCol != None):
+            year=Helpers.InterpretYear(fanzineLine[yearCol])
+        if (monthCol != None):
+            month=Helpers.InterpretMonth(fanzineLine[monthCol])
+
         print("FanzineDef:"+l)
+
