@@ -29,7 +29,7 @@ for name in filelist:
     header = ""
     description = []        # There may be more than one description block, so this is a list of strings
     partialDescription=""   # When we have processed some but not all of the lines in a description, this holds the material found so far
-    columnDef = ""
+    columnDefs = []         # An array of columdef strings
     while True:
         l = f.readline()
         if len(l) == 0:  # Check for EOF
@@ -62,8 +62,10 @@ for name in filelist:
                 partialDescription=l    # It has <P> but no </P>, so it's the start of a multi-line description.
             continue
 
-        if len(columnDef) == 0:
-            columnDef = l
+        # Is this the columdef line?
+        if len(columnDefs) == 0 and len(l) > 5 and l[:6].lower() == "issue;":
+            columnDefs = l.lower().replace(";", " ").split()     # Split the columndefs line on spans of semicolon & whitespace
             print("ColumDef: "+l)
             continue
+
         print("FanzineDef:"+l)
