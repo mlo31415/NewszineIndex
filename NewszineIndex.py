@@ -96,33 +96,37 @@ for name in filelist:
             if yearCol < len(fanzineLine):
                 year=Helpers.InterpretYear(fanzineLine[yearCol])
             else:
-                print("***FanzineLine too short: yearCol="+str(yearCol)+" Fanzineline='"+fanzineLine+"'")
+                print("***FanzineLine too short: yearCol="+str(yearCol)+" Fanzineline='"+l+"'")
         if (monthCol != None):
             if monthCol < len(fanzineLine):
                 month=Helpers.InterpretMonth(fanzineLine[monthCol])
         else:
-            print("***FanzineLine too short: yearCol=" + str(monthCol) + " Fanzineline='" + fanzineLine + "'")
+            print("***FanzineLine too short: yearCol=" + str(monthCol) + " Fanzineline='" + l + "'")
 
-        fanzineList.append((year, month, fanzineLine))
+        if year == None:
+            year=0
+        if month == None:
+            month=0
+        fanzineList.append((year, month, l))
         print("FanzineDef:"+l)
 
-    # Ok, hopefully we have a list of all the fanzines.  Sort it and print it out
-    fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
-    year=0
-    month=0
-    for f in fanzineList:
-        line=""
-        if f[0] != year:
-            year=f[0]
-            line=str(year)
-        else:
-            line="     "
-        if f[1] != month:
-            month-f[1]
-            line=line+"  "+str(month)
-        else:
-            line=line+"     "
-        line=line+"  "+str(f[2])
-        print(line)
+# Ok, hopefully we have a list of all the fanzines.  Sort it and print it out
+fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
+year=0
+month=0
+for f in fanzineList:
+    line=""
+    if f[0] != year:
+        year=f[0]
+        line=str(year)
+    else:
+        line="    "
+    if f[1] != month:
+        month=f[1]
+        line=line+"  "+str(month)
+    else:
+        line=line+"    "
+    line=line+"  >>"+str(f[2])
+    print(line)
 
 
