@@ -172,7 +172,14 @@ dirlist = [f for f in dirlist if os.path.isdir(f)]
 #   If not, we check to see if there is an entry in the dirnameExceptions dictionary.
 dirnameExceptions={
     "blooming" : "Bloomington_News",
+    "bullshe1" : "Bullsheet",
+    "bullshe2" : "Bullsheet",
+    "fanewscard" : "FanewsCard",
+    "fantasy_news_newseries" : "Fantasy_News_NewSeries",
+    "luna" : "Luna",
     "midwest" : "MidWest_Fan_News",
+    "neosfs" : "NEOSFS",
+    "qx" : "QX",
     "sfnews" : "SF_News",
     "sfnewsco" : "SF_Newscope",
     "sfnl-rw" : "SFNL_RichardWilson"}
@@ -182,16 +189,16 @@ for d in internalNameDictionary:
     internalNameDictionary[d]=internalNameDictionary[d].replace(" ", "_")
 
 for file in lstList:
-    file=os.path.splitext(file)[0].lower()
+    file=os.path.splitext(file)[0]
     dirname=None
-    if internalNameDictionary[file] in dirlist:
-        dirname=internalNameDictionary[file]
+    if internalNameDictionary[file.lower()] in dirlist:
+        dirname=internalNameDictionary[file.lower()]
     else:
         if file in dirlist:
             dirname=file
         else:
-            if file in dirnameExceptions:
-                dirname=dirnameExceptions[file]
+            if file.lower() in dirnameExceptions:
+                dirname=dirnameExceptions[file.lower()]
 
     if dirname == None:
         print("   ***'" + file + "' seems to have no matching directory")
