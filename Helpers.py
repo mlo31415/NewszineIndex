@@ -36,7 +36,7 @@ def InterpretMonth(monthstring):
                           "september-december" : 12,
                           "november-december" : 12,
                           "december-january" : 12,
-                          "dec-jan", 12}
+                          "dec-jan" : 12}
     try:
         month=monthConversionTable[monthstring.replace(" ", "").lower()]
     except:
