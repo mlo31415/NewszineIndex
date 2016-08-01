@@ -2,7 +2,7 @@ def InterpretYear(yearstring):
     try:
         year=int(yearstring)
     except:
-        print("***Year conversion failed: '" + yearstring+"'")
+        print("   ***Year conversion failed: '" + yearstring+"'")
         year=None
     return year
 
@@ -26,15 +26,46 @@ def InterpretMonth(monthstring):
                           "january-february" : 2,
                           "march-april" : 4,
                           "april-may" : 5,
+                          "apr-may" : 5,
                           "may-june" : 6,
                           "july-august" : 8,
-                          "september-october" : 11,
+                          "september-october" : 10,
+                          "sep-oct" : 10,
+                          "october-november" : 11,
+                          "oct-nov" : 11,
                           "september-december" : 12,
                           "november-december" : 12,
-                          "december-january" : 12}
+                          "december-january" : 12,
+                          "dec-jan", 12}
     try:
-        month=monthConversionTable[monthstring.lower()];
+        month=monthConversionTable[monthstring.replace(" ", "").lower()]
     except:
-        print("***Month conversion failed: "+monthstring)
+        print("   ***Month conversion failed: "+monthstring)
         month=None
     return month
+
+def CannonicizeColumnHeaders(header):
+    translationTable={"title" : "title",
+                      "issue" : "title",
+                      "month" : "month",
+                      "mo." : "month",
+                      "day" : "day",
+                      "year" : "year",
+                      "repro" : "repro",
+                      "editor" : "editor",
+                      "editors" : "editor",
+                      "notes" : "notes",
+                      "pages" : "pages",
+                      "size" : "size",
+                      "type" : "type",
+                      "#" : "#",
+                      "no" : "#",
+                      "number" : "#",
+                      "vol" : "vol",
+                      "volume" : "vol",
+                      "num" : "num"}
+    try:
+        return translationTable[header.replace(" ", "").lower()]
+    except:
+        print("   ***Column Header conversion failed: '" + header + "'")
+        return None

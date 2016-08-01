@@ -67,8 +67,9 @@ for name in filelist:
 
         # Is this the columdef line?
         if len(columnDefs) == 0 and len(l) > 5 and (l[:6].lower() == "issue;" or l[:6].lower() == "title;"):
-            columnDefs = l.lower().split(";")     # Split the columndefs line on semicolon
-            columnDefs=[c.strip() for c in columnDefs]      # And remove whitespace padding
+            columnDefs = l.lower().split(";")               # Split the columndefs line on semicolon
+            columnDefs=[c.strip() for c in columnDefs]      # Remove whitespace padding
+            columnDefs=[Helpers.CannonicizeColumnHeaders(c) for c in columnDefs]    # Cannonicize headers
             try:
                 yearCol = columnDefs.index("year")
             except ValueError:
