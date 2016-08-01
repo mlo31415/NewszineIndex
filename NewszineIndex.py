@@ -122,7 +122,12 @@ for name in filelist:
 fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
 year=0
 month=0
+yearCounts={}
 for f in fanzineList:
+    if f[0] in yearCounts:
+        yearCounts[f[0]]=yearCounts[f[0]]+1
+    else:
+        yearCounts[f[0]]=1
     line=""
     if f[0] != year:
         year=f[0]
@@ -136,5 +141,13 @@ for f in fanzineList:
         line=line+"    "
     line=line+"  >>"+str(f[2])
     print(line)
+
+# Now print out the yearCounts data. We turn the dict into a list of tuples and sort it and print it
+yearCountsList=[]
+for y in yearCounts:
+    yearCountsList.append((y, yearCounts[y]))
+yearCountsList=sorted(yearCountsList)
+for t in yearCountsList:
+    print(str(t[0])+": "+str(t[1]))
 
 
