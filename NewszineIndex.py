@@ -20,7 +20,7 @@ filelist = [f for f in filelist if os.path.splitext(f)[1].lower() == ".lst"]
 # A single line containing the following, semi-colon delimited: Title, Editors, Date range, Zine type
 # One or more repetitions of the following
 # A blank line
-# One or more lines of descriptive material bounded by <P>, </P>
+# One or more lines of descriptive material bounded by <P>-</P> or <H3>-</H3>
 # A blank line
 # A column definition line comprised of a semicolon-delimited list of column headings.  It always begins with "Issue"
 # A blank line
@@ -46,7 +46,7 @@ for name in filelist:
             print("Header: "+l)
             continue
 
-        # Might this be a Description?  A Description is bounded by <P> </P> blocks
+        # Might this be a Description?  A Description is bounded by <P>-</P> or <H3>-</H3>blocks
         # First look at the case where we're already processing a multi-line description
         if len(partialDescription) > 0:
             partialDescription = partialDescription + " " + l
@@ -56,13 +56,13 @@ for name in filelist:
                 partialDescription=""
             continue
 
-        # Might this be a the start of a Description?  A Description is bounded by <P> </P> blocks
-        if (len(l) > 3 and l.lower()[:3] == "<p>"):
-            if len(l) > 4 and l[-4:].lower() == "</p>":        # Does this line also close the description?  (I.e., it's a single-line description.)
+        # Might this be a the start of a Description?  A Description is bounded by <P>-</P> or <H3>-</H3> blocks
+        if (len(l) > 3 and l.lower()[:3] == "<p>") or (len(l) > 4 and l.lower()[:4] == "<h3>"):
+            if (len(l) > 4 and l[-4:].lower() == "</p>") or (len(l) > 5 and l[-5:].lower() == "</h3>"):        # Does this line also close the description?  (I.e., it's a single-line description.)
                 description.append(l)   # This is a single-line description
                 print("Description: " + l)
             else:
-                partialDescription=l    # It has <P> but no </P>, so it's the start of a multi-line description.
+                partialDescription=l    # It has <P> or <H3> but no </P> or </H3>, so it's the start of a multi-line description.
             continue
 
         # Is this the columdef line?
