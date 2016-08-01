@@ -1,4 +1,3 @@
-
 import tkinter
 from tkinter import filedialog
 import os
@@ -113,9 +112,9 @@ for name in filelist:
         if month == None:
             month=0
             parseFailure = True
-        fanzineList.append((year, month, l))
-
-        if parseFailure:
+        if not parseFailure:
+            fanzineList.append((year, month, l))
+        else:
             print("FanzineDef:"+l)
 
 # Ok, hopefully we have a list of all the fanzines.  Sort it and print it out
