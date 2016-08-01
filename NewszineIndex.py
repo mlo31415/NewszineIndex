@@ -7,14 +7,14 @@ import operator
 # Get the directory containing the lst files to be analyzed.
 root = tkinter.Tk()
 root.withdraw()
-dirname = filedialog.askdirectory()
-if len(dirname) == 0:
+lstDirname = filedialog.askdirectory()
+if len(lstDirname) == 0:
     exit()
 
 # Get a list of all the filenames of the .lst files in that directory.
-os.chdir(dirname)
-filelist = os.listdir(".")
-filelist = [f for f in filelist if os.path.splitext(f)[1].lower() == ".lst"]
+os.chdir(lstDirname)
+lstList = os.listdir(".")
+lstList = [f for f in lstList if os.path.splitext(f)[1].lower() == ".lst"]
 
 # We walk the list of .lst files, analyzing each one.
 # The structure of a .lst file is:
@@ -27,7 +27,8 @@ filelist = [f for f in filelist if os.path.splitext(f)[1].lower() == ".lst"]
 # A blank line
 # One line for each issue, each comprised of a semicolon-delimited list of data for that fanzine which matches the headings
 fanzineList=[]
-for name in filelist:
+internalNameDictionary={}
+for name in lstList:
     f = open(name)
     print("\nOpening "+name)
     header = ""
@@ -46,6 +47,7 @@ for name in filelist:
         if len(header) == 0:    # If no header has been processed, then the first non-blank line is the header
             header = l
             print("Header: "+l)
+            internalNameDictionary[os.path.splitext(name)[0].lower()]=header.split(";")[0].strip()
             continue
 
         # Might this be a Description?  A Description is bounded by <P>-</P> or <H3>-</H3>blocks
@@ -153,5 +155,48 @@ for t in yearCountsList:
     print(str(t[0])+": "+str(t[1]))
 
 # Now create the html
+# The directories containing the scans are expected to be in a sibling directory called "fanzines"
+fanzinesDirname=os.path.normpath(os.path.join(lstDirname, "../fanzines"))
+
+# Get a list of all the directories in fanzines
+os.chdir(fanzinesDirname)
+dirlist = os.listdir(".")
+dirlist = [f for f in dirlist if os.path.isdir(f)]
+
+# OK.  Now we need to determine the directory name for each LST file.
+# This is non-trivial.
+# For each LST file:
+#   Each LST file contains a header line with semicolon-delimited information in it.  The first field is the internal name of the fanzine.
+#   We first check to see if there is a directory present matching the internal name (with all blanks replaced by '_')
+#   If not, we check to see if there is a directory present matching the LST file's name.
+#   If not, we check to see if there is an entry in the dirnameExceptions dictionary.
+dirnameExceptions={
+    "blooming" : "Bloomington_News",
+    "midwest" : "MidWest_Fan_News",
+    "sfnews" : "SF_News",
+    "sfnewsco" : "SF_Newscope",
+    "sfnl-rw" : "SFNL_RichardWilson"}
+
+# Convert the values of the internalNameDictionary to directory form (spaces -> '_')
+for d in internalNameDictionary:
+    internalNameDictionary[d]=internalNameDictionary[d].replace(" ", "_")
+
+for file in lstList:
+    file=os.path.splitext(file)[0].lower()
+    dirname=None
+    if internalNameDictionary[file] in dirlist:
+        dirname=internalNameDictionary[file]
+    else:
+        if file in dirlist:
+            dirname=file
+        else:
+            if file in dirnameExceptions:
+                dirname=dirnameExceptions[file]
+
+    if dirname == None:
+        print("   ***'" + file + "' seems to have no matching directory")
 
 
+
+
+pass
