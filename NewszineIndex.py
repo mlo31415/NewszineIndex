@@ -34,6 +34,7 @@ for name in filelist:
     partialDescription=""   # When we have processed some but not all of the lines in a description, this holds the material found so far
     columnDefs = []         # An array of columdef strings
     while True:
+        parseFailure=False
         l = f.readline()
         if len(l) == 0:  # Check for EOF
             break
@@ -97,19 +98,25 @@ for name in filelist:
             if yearCol < len(fanzineLine):
                 year=Helpers.InterpretYear(fanzineLine[yearCol])
             else:
-                print("***FanzineLine too short: yearCol="+str(yearCol)+" Fanzineline='"+l+"'")
+                print("   ***FanzineLine too short: yearCol="+str(yearCol)+" Fanzineline='"+l+"'")
+                parseFailure=True
         if (monthCol != None):
             if monthCol < len(fanzineLine):
                 month=Helpers.InterpretMonth(fanzineLine[monthCol])
         else:
-            print("***FanzineLine too short: yearCol=" + str(monthCol) + " Fanzineline='" + l + "'")
+            print(   "***FanzineLine too short: yearCol=" + str(monthCol) + " Fanzineline='" + l + "'")
+            parseFailure = True
 
         if year == None:
             year=0
+            parseFailure = True
         if month == None:
             month=0
+            parseFailure = True
         fanzineList.append((year, month, l))
-        print("FanzineDef:"+l)
+
+        if parseFailure:
+            print("FanzineDef:"+l)
 
 # Ok, hopefully we have a list of all the fanzines.  Sort it and print it out
 fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
