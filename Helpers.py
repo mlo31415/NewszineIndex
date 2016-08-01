@@ -23,11 +23,14 @@ def InterpretMonth(monthstring):
                           "summer" : 7,
                           "fall" : 10, "autumn" : 10,
                           "winter" : 1,
+                          "january-february" : 2,
                           "march-april" : 4,
+                          "april-may" : 5,
                           "may-june" : 6,
                           "july-august" : 8,
                           "september-october" : 11,
                           "september-december" : 12,
+                          "november-december" : 12,
                           "december-january" : 12}
     try:
         month=monthConversionTable[monthstring.lower()];
