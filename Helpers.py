@@ -69,3 +69,19 @@ def CannonicizeColumnHeaders(header):
     except:
         print("   ***Column Header conversion failed: '" + header + "'")
         return None
+
+def RecognizeDescritpionBlockStart(line):
+    starters={"<p>", "<h2>", "<h3>"}
+    line=line.lower()
+    for starter in starters:
+        if len(line) > len(starter) and line[:len(starter)] == starter:
+            return True
+    return False
+
+def RecognizeDescriptionBlockEnd(line):
+    enders={"</p>", "</h2>", "</h3>"}
+    line=line.lower()
+    for ender in enders:
+        if len(line) > len(ender) and line[-len(ender):] == ender:
+            return True
+    return False

@@ -50,15 +50,15 @@ for name in filelist:
         # First look at the case where we're already processing a multi-line description
         if len(partialDescription) > 0:
             partialDescription = partialDescription + " " + l
-            if len(l) > 4 and l[-4:].lower() == "</p>":        # Does this line close the description?
+            if Helpers.RecognizeDescriptionBlockEnd(l):        # Does this line close the multi-line description?
                 description.append(partialDescription)
                 print("Description: " + partialDescription)
                 partialDescription=""
             continue
 
         # Might this be a the start of a Description?  A Description is bounded by <P>-</P> or <H3>-</H3> blocks
-        if (len(l) > 3 and l.lower()[:3] == "<p>") or (len(l) > 4 and l.lower()[:4] == "<h3>"):
-            if (len(l) > 4 and l[-4:].lower() == "</p>") or (len(l) > 5 and l[-5:].lower() == "</h3>"):        # Does this line also close the description?  (I.e., it's a single-line description.)
+        if Helpers.RecognizeDescritpionBlockStart(l):
+            if Helpers.RecognizeDescriptionBlockEnd(l):        # Does this line also close the description?  (I.e., it's a single-line description.)
                 description.append(l)   # This is a single-line description
                 print("Description: " + l)
             else:
