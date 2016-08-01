@@ -8,6 +8,8 @@ import operator
 root = tkinter.Tk()
 root.withdraw()
 dirname = filedialog.askdirectory()
+if len(dirname) == 0:
+    exit()
 
 # Get a list of all the filenames of the .lst files in that directory.
 os.chdir(dirname)
@@ -112,6 +114,7 @@ for name in filelist:
         if month == None:
             month=0
             parseFailure = True
+
         if not parseFailure:
             fanzineList.append((year, month, l))
         else:
@@ -148,5 +151,7 @@ for y in yearCounts:
 yearCountsList=sorted(yearCountsList)
 for t in yearCountsList:
     print(str(t[0])+": "+str(t[1]))
+
+# Now create the html
 
 
