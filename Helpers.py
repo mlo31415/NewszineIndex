@@ -67,7 +67,9 @@ def CannonicizeColumnHeaders(header):
                       "number" : "#",
                       "vol" : "vol",
                       "volume" : "vol",
-                      "num" : "num"}
+                      "num" : "num",
+                      "headline" : "headline",
+                      "publisher" : "publisher"}
     try:
         return translationTable[header.replace(" ", "").lower()]
     except:
