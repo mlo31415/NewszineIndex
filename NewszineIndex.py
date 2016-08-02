@@ -188,6 +188,7 @@ dirnameExceptions={
 for d in internalNameDictionary:
     internalNameDictionary[d]=internalNameDictionary[d].replace(" ", "_")
 
+lstNameToDirNameMap={}
 for file in lstList:
     file=os.path.splitext(file)[0]
     dirname=None
@@ -202,8 +203,9 @@ for file in lstList:
 
     if dirname == None:
         print("   ***'" + file + "' seems to have no matching directory")
+    lstNameToDirNameMap[file]=dirname
 
-
-
+for d in lstNameToDirNameMap:
+    print(d+" --> "+lstNameToDirNameMap[d]+"    "+str(len(os.listdir(lstNameToDirNameMap[d]))))
 
 pass
