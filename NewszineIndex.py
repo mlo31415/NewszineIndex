@@ -130,7 +130,7 @@ for name in lstList:
             print("FanzineDef:"+l)
 
 # Ok, hopefully we have a list of all the fanzines.  Sort it and print it out
-fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
+# fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
 year=0
 month=0
 yearCounts={}
@@ -139,27 +139,29 @@ for f in fanzineList:
         yearCounts[f[0]]=yearCounts[f[0]]+1
     else:
         yearCounts[f[0]]=1
-    line=""
-    if f[0] != year:
-        year=f[0]
-        line=str(year)
-    else:
-        line="    "
-    if f[1] != month:
-        month=f[1]
-        line=line+"  "+str(month)
-    else:
-        line=line+"    "
-    line=line+"  >>"+str(f[2])
-    print(line)
+#     line=""
+#     if f[0] != year:
+#         year=f[0]
+#         line=str(year)
+#     else:
+#         line="    "
+#     if f[1] != month:
+#         month=f[1]
+#         line=line+"  "+str(month)
+#     else:
+#         line=line+"    "
+#     line=line+"  >>"+str(f[2])
+#     print(line)
 
-# Now print out the yearCounts data. We turn the dict into a list of tuples and sort it and print it
+# Now print out the yearCounts data. We turn the dict into a list of tuples and sort it and print it to histogram.txt
+histogram=open("./histogram.txt", "w")
 yearCountsList=[]
 for y in yearCounts:
     yearCountsList.append((y, yearCounts[y]))
 yearCountsList=sorted(yearCountsList)
 for t in yearCountsList:
-    print(str(t[0])+": "+str(t[1]))
+    print(str(t[0])+": "+str(t[1]), file=histogram)
+histogram.close()
 
 # Now create the html
 # The directories containing the scans are expected to be in a sibling directory called "fanzines"
@@ -212,8 +214,8 @@ for file in lstList:
         print("   ***'" + file + "' seems to have no matching directory")
     lstNameToDirNameMap[file]=dirname
 
-for d in lstNameToDirNameMap:
-    print(d+" --> "+lstNameToDirNameMap[d]+"    "+str(len(os.listdir(lstNameToDirNameMap[d]))))
+# for d in lstNameToDirNameMap:
+#    print(d+" --> "+lstNameToDirNameMap[d]+"    "+str(len(os.listdir(lstNameToDirNameMap[d]))))
 
 
 months={1 : "January",
