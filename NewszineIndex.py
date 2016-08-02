@@ -3,6 +3,7 @@ from tkinter import filedialog
 import os
 import Helpers
 import operator
+import re
 
 # Get the directory containing the lst files to be analyzed.
 root = tkinter.Tk()
@@ -122,7 +123,9 @@ for name in lstList:
             parseFailure = True
 
         if not parseFailure:
-            fanzineList.append((year, month, l, name))
+            pattern=re.compile("^([a-zA-Z]*)(.*)>(.*)$")
+            m=pattern.match(fanzineLine[0])
+            fanzineList.append((year, month, l, name, m.groups()[0], m.groups()[1], m.groups()[2]))
         else:
             print("FanzineDef:"+l)
 
@@ -226,6 +229,44 @@ months={1 : "January",
         11 : "November",
         12 : "December"}
 
+filePrefix={    # This deals with the arbitrary fanzine prefixes used on the website
+    "Australian_SF_News" : "auss",
+    "Axe" : "Axe",
+    "Barsoomian_Times" : "Barsoomian_Times",
+    "Bloomington_News" : "Bloomington_News",
+    "Bullsheet" : "Bullsheet",
+    "FANAC" : "FANAC",
+    "FanewsCard" : "Fanews",
+    "Fantasy_Fiction_Field" : "FanFic_Field",
+    "Fantasy_News" : "Fantasy_News",
+    "Fantasy_News_NewSeries" : "fn",
+    "Fantasy_Times" : "Fantasy_Times",
+    "Fiawol" : "Fiawol",
+    "Focal_Point" : "Focal_Point",
+    "Futurian_Observer" : "Futurian_Observer",
+    "Karass" : "Karass",
+    "Luna" : "Luna",
+    "MidWest_Fan_News" : "MidWest_Fan_News",
+    "NEOSFS" : "NEOSFS",
+    "Phan" : "Phan",
+    "QX" : "QX",
+    "Rally" : "Rally",
+    "Ratatosk" : "Ratatosk",
+    "Science_Fantasy_Review" : "scif",
+    "Science_Fiction_Newsletter" : "SFNews",
+    "Science_Fiction_Times" : "Science_Fiction_Times",
+    "SF_News" : "SF_News",
+    "SF_Newscope" : "sfn",
+    "SFinctor" : "SFinctor",
+    "SFNL-RichardWilson" : "SFNL",
+    "Shards_of_Babel" : "Shards_of_Babel",
+    "Spang_Blah" : "Spang_Blah",
+    "Starspinkle" : "Starspinkle",
+    "STEFCARD" : "STEFCARD",
+    "Thyme" : "Thyme",
+    "Tympany" : "Tympany"
+}
+
 f=open("../newszinestable.txt", "w")
 print('<table border="1">', file=f)
 
@@ -247,8 +288,15 @@ for fmz in fanzineList:
     else:
         print('        <td>&nbsp;</td>', file=f)
 
-    print('               <td>'+lstNameToDirNameMap[os.path.splitext(fmz[3])[0]]+'</<td>', file=f)
-    print('               <td>'+str(fmz[2])+'</<td>', file=f)
+    url=lstNameToDirNameMap[os.path.splitext(fmz[3])[0]]        # Directory name
+    #print('               <td>'+url+'</<td>', file=f)
+    #print('               <td>'+fmz[4]+'</<td>', file=f)        # Leading alpha part of filename
+    #print('               <td>' + fmz[5] + '</<td>', file=f)    # Numeric part of filename
+    url=url+"/"+filePrefix[url]+fmz[5]+".html"
+    #print('               <td>' + url + '</<td>', file=f)
+    #print('               <td>' + str(os.path.isfile(url)) + '</<td>', file=f)
+    print('               <td>' + '<a href="./'+url+'">'+fmz[6]+'</a>' + '</<td>', file=f)
+    #print('               <td>'+str(fmz[2])+'</<td>', file=f)   # LST line
     print('    </tr>', file=f)
 
 print('</table>', file=f)
