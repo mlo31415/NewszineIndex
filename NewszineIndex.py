@@ -128,6 +128,8 @@ for name in lstList:
         pattern=re.compile("^([a-zA-Z]*)(.*)>(.*)$")
         m=pattern.match(fanzineLine[0])
         fanzineList.append((year, month, l, name, m.groups()[0], m.groups()[1], m.groups()[2]))
+        if m.groups()[0] == None or m.groups()[1] == None or m.groups()[1] == None:
+            print("   ***FanzineLine does not have all three RegExs: " + fanzineLine)
 
 
 # Ok, hopefully we have a list of all the fanzines.  Sort it and print it out
@@ -233,6 +235,7 @@ months={1 : "January",
         12 : "December"}
 
 filePrefix={    # This deals with the arbitrary fanzine prefixes used on the website
+    "Ansible" : "Ansible",
     "Australian_SF_News" : "auss",
     "Axe" : "Axe",
     "Barsoomian_Times" : "Barsoomian_Times",
@@ -277,6 +280,21 @@ fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
 year=0
 month=0
 for fmz in fanzineList:
+
+    url=lstNameToDirNameMap[os.path.splitext(fmz[3])[0]]        # Directory name
+    try:
+        url = url + "/" + filePrefix[url] + fmz[5]
+    except:
+        print("   *** Probable URL failure.  fmz="+str(fmz))
+        continue
+
+    if url[-4:].lower() !=  ".pdf": # If it's not already got a .pdf extension, add an .html extension
+        url=url+".html"
+
+    if not os.path.isfile(url):
+        print("   *** File does not exist: "+url)
+        continue
+
     print('    <tr>', file=f)
     line=""
     if fmz[0] != year:
@@ -291,15 +309,8 @@ for fmz in fanzineList:
     else:
         print('        <td>&nbsp;</td>', file=f)
 
-    url=lstNameToDirNameMap[os.path.splitext(fmz[3])[0]]        # Directory name
-    #print('               <td>'+url+'</<td>', file=f)
-    #print('               <td>'+fmz[4]+'</<td>', file=f)        # Leading alpha part of filename
-    #print('               <td>' + fmz[5] + '</<td>', file=f)    # Numeric part of filename
-    url=url+"/"+filePrefix[url]+fmz[5]+".html"
-    #print('               <td>' + url + '</<td>', file=f)
-    #print('               <td>' + str(os.path.isfile(url)) + '</<td>', file=f)
     print('               <td>' + '<a href="./'+url+'">'+fmz[6]+'</a>' + '</<td>', file=f)
-    #print('               <td>'+str(fmz[2])+'</<td>', file=f)   # LST line
+
     print('    </tr>', file=f)
 
 print('</table>', file=f)
