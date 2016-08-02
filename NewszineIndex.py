@@ -31,7 +31,7 @@ fanzineList=[]
 internalNameDictionary={}
 for name in lstList:
     f = open(name)
-    print("\nOpening "+name)
+    #print("\nOpening "+name)
     header = ""
     description = []        # There may be more than one description block, so this is a list of strings
     partialDescription=""   # When we have processed some but not all of the lines in a description, this holds the material found so far
@@ -47,7 +47,7 @@ for name in lstList:
         l=l.strip() # Remove leading and trailing whitespace, including the trailing \n
         if len(header) == 0:    # If no header has been processed, then the first non-blank line is the header
             header = l
-            print("Header: "+l)
+            #print("Header: "+l)
             internalNameDictionary[os.path.splitext(name)[0].lower()]=header.split(";")[0].strip()
             continue
 
@@ -57,7 +57,7 @@ for name in lstList:
             partialDescription = partialDescription + " " + l
             if Helpers.RecognizeDescriptionBlockEnd(l):        # Does this line close the multi-line description?
                 description.append(partialDescription)
-                print("Description: " + partialDescription)
+                #print("Description: " + partialDescription)
                 partialDescription=""
             continue
 
@@ -65,7 +65,7 @@ for name in lstList:
         if Helpers.RecognizeDescritpionBlockStart(l):
             if Helpers.RecognizeDescriptionBlockEnd(l):        # Does this line also close the description?  (I.e., it's a single-line description.)
                 description.append(l)   # This is a single-line description
-                print("Description: " + l)
+                #print("Description: " + l)
             else:
                 partialDescription=l    # It has <P> or <H3> but no </P> or </H3>, so it's the start of a multi-line description.
             continue
@@ -87,8 +87,8 @@ for name in lstList:
                 dayCol = columnDefs.index("day")
             except ValueError:
                 dayCol=None
-            print("ColumnDef: "+l)
-            print("ColumnDef: YearCol="+str(yearCol)+" MonthCol="+str(monthCol)+" DayCol="+str(dayCol))
+            #print("ColumnDef: "+l)
+            #print("ColumnDef: YearCol="+str(yearCol)+" MonthCol="+str(monthCol)+" DayCol="+str(dayCol))
             continue
 
         # OK, it must be a fanzine line
@@ -106,13 +106,13 @@ for name in lstList:
             if yearCol < len(fanzineLine):
                 year=Helpers.InterpretYear(fanzineLine[yearCol])
             else:
-                print("   ***FanzineLine too short: yearCol="+str(yearCol)+" Fanzineline='"+l+"'")
+                print("   ***FanzineLine too short in "+name+": yearCol="+str(yearCol)+" Fanzineline='"+l+"'")
                 parseFailure=True
         if (monthCol != None):
             if monthCol < len(fanzineLine):
                 month=Helpers.InterpretMonth(fanzineLine[monthCol])
         else:
-            print(   "***FanzineLine too short: yearCol=" + str(monthCol) + " Fanzineline='" + l + "'")
+            print(   "***FanzineLine too short in"+name+": yearCol=" + str(monthCol) + " Fanzineline='" + l + "'")
             parseFailure = True
 
         if year == None:
@@ -122,12 +122,13 @@ for name in lstList:
             month=0
             parseFailure = True
 
-        if not parseFailure:
-            pattern=re.compile("^([a-zA-Z]*)(.*)>(.*)$")
-            m=pattern.match(fanzineLine[0])
-            fanzineList.append((year, month, l, name, m.groups()[0], m.groups()[1], m.groups()[2]))
-        else:
-            print("FanzineDef:"+l)
+        if parseFailure:
+            print("File: "+name+"  FanzineDef: " + l+"\n")
+            continue
+        pattern=re.compile("^([a-zA-Z]*)(.*)>(.*)$")
+        m=pattern.match(fanzineLine[0])
+        fanzineList.append((year, month, l, name, m.groups()[0], m.groups()[1], m.groups()[2]))
+
 
 # Ok, hopefully we have a list of all the fanzines.  Sort it and print it out
 # fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
