@@ -96,6 +96,10 @@ for name in lstList:
         fanzineLine = l.split(";")
         fanzineLine=[f.strip() for f in fanzineLine]
 
+        # First, if there isn't a ">" in the first item on the line, we don't actually have the fanzine, so we drop it.
+        if fanzineLine[0].find(">") == -1:
+            continue
+
         # Let's figure out the date
         if (yearCol != None):
             if yearCol < len(fanzineLine):
@@ -118,7 +122,7 @@ for name in lstList:
             parseFailure = True
 
         if not parseFailure:
-            fanzineList.append((year, month, l))
+            fanzineList.append((year, month, l, name))
         else:
             print("FanzineDef:"+l)
 
@@ -208,6 +212,20 @@ for file in lstList:
 for d in lstNameToDirNameMap:
     print(d+" --> "+lstNameToDirNameMap[d]+"    "+str(len(os.listdir(lstNameToDirNameMap[d]))))
 
+
+months={1 : "January",
+        2 : "February",
+        3 : "March",
+        4 : "April",
+        5 : "May",
+        6 : "June",
+        7 : "July",
+        8 : "August",
+        9 : "September",
+        10 : "October",
+        11 : "November",
+        12 : "December"}
+
 f=open("../newszinestable.txt", "w")
 print('<table border="1">', file=f)
 
@@ -225,10 +243,11 @@ for fmz in fanzineList:
 
     if fmz[1] != month:
         month=fmz[1]
-        print('        <td>' + str(month) + '</td>', file=f)
+        print('        <td>' + months[month] + '</td>', file=f)
     else:
         print('        <td>&nbsp;</td>', file=f)
 
+    print('               <td>'+lstNameToDirNameMap[os.path.splitext(fmz[3])[0]]+'</<td>', file=f)
     print('               <td>'+str(fmz[2])+'</<td>', file=f)
     print('    </tr>', file=f)
 
