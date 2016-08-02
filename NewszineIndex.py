@@ -182,7 +182,7 @@ dirnameExceptions={
     "qx" : "QX",
     "sfnews" : "SF_News",
     "sfnewsco" : "SF_Newscope",
-    "sfnl-rw" : "SFNL_RichardWilson"}
+    "sfnl-rw" : "SFNL-RichardWilson"}
 
 # Convert the values of the internalNameDictionary to directory form (spaces -> '_')
 for d in internalNameDictionary:
@@ -207,5 +207,33 @@ for file in lstList:
 
 for d in lstNameToDirNameMap:
     print(d+" --> "+lstNameToDirNameMap[d]+"    "+str(len(os.listdir(lstNameToDirNameMap[d]))))
+
+f=open("../newszinestable.txt", "w")
+print('<table border="1">', file=f)
+
+fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
+year=0
+month=0
+for fmz in fanzineList:
+    print('    <tr>', file=f)
+    line=""
+    if fmz[0] != year:
+        year=fmz[0]
+        print('        <td>' + str(year) + '</td>', file=f)
+    else:
+        print('        <td>&nbsp;</td>', file=f)
+
+    if fmz[1] != month:
+        month=fmz[1]
+        print('        <td>' + str(month) + '</td>', file=f)
+    else:
+        print('        <td>&nbsp;</td>', file=f)
+
+    print('               <td>'+str(fmz[2])+'</<td>', file=f)
+    print('    </tr>', file=f)
+
+print('</table>', file=f)
+f.close()
+
 
 pass
