@@ -261,6 +261,7 @@ filePrefix={    # This deals with the arbitrary fanzine prefixes used on the web
     "Science_Fantasy_Review" : "scif",
     "Science_Fiction_Newsletter" : "SFNews",
     "Science_Fiction_Times" : "Science_Fiction_Times",
+    "Scream" : "Scream",
     "SF_News" : "SF_News",
     "SF_Newscope" : "sfn",
     "SFinctor" : "SFinctor",
@@ -269,6 +270,7 @@ filePrefix={    # This deals with the arbitrary fanzine prefixes used on the web
     "Spang_Blah" : "Spang_Blah",
     "Starspinkle" : "Starspinkle",
     "STEFCARD" : "STEFCARD",
+    "Swefanac" : "SWE",
     "Thyme" : "Thyme",
     "Tympany" : "Tympany"
 }
@@ -309,7 +311,7 @@ for fmz in fanzineList:
     else:
         print('        <td>&nbsp;</td>', file=f)
 
-    print('               <td>' + '<a href="./'+url+'">'+fmz[6]+'</a>' + '</<td>', file=f)
+    print('               <td>' + '<a href="./'+url+'">'+fmz[6]+'</a>' + '<td>', file=f)
 
     print('    </tr>', file=f)
 
