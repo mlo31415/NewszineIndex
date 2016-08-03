@@ -235,7 +235,7 @@ months={1 : "January",
         12 : "December"}
 
 filePrefix={    # This deals with the arbitrary fanzine prefixes used on the website
-    # The key for each pair is the directory name, the value is the file prefix used in the LST files (which is replaced)
+    # The key for each pair is the directory name, the value is the file prefix used in the directories
     "Ansible" : "Ansible",
     "Australian_SF_News" : "auss",
     "Axe" : "Axe",
