@@ -271,7 +271,7 @@ filePrefix={    # This deals with the arbitrary fanzine prefixes used on the web
     "Spang_Blah" : "Spang_Blah",
     "Starspinkle" : "Starspinkle",
     "STEFCARD" : "STEFCARD",
-    "Swefanac" : "SWE",
+    "Swefanac" : "Swefanac",
     "Thyme" : "Thyme",
     "Tympany" : "Tympany",
     "Winnie" : "Winnie"
