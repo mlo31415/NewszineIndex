@@ -305,7 +305,7 @@ for fmz in fanzineList:
     # Start the row
     print('   <tr>', file=f)
     # Put the month & year in the first column of the table only if it changes.
-    newMothYear=months[month]+" "+str(fmz[0])
+    newMothYear=str(months[fmz[1]])+" "+str(fmz[0])
     if newMothYear != monthYear:
         monthYear=newMothYear
         print('      <td>' + newMothYear + '</td>', file=f)
