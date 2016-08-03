@@ -281,17 +281,19 @@ f=open("../newszinestable.txt", "w")
 print('<table border="1">', file=f)
 
 fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
-year=0
-month=0
+monthYear=""
 for fmz in fanzineList:
+
+    # This section deals with complicated and sometimes problematic data, so we do a bit of trail and error
 
     url=lstNameToDirNameMap[os.path.splitext(fmz[3])[0]]        # Directory name
     try:
-        filePrefix[url]
+        filePrefix[url]     # We need to make sure that this fanzine is in the filePrefix table.
     except:
-        print("   *** filePrefix lookup failure for '"+url+"'")
+        print("   *** '"+url+"' is missing from the filePrefix table")
         continue
 
+    # The file on disk can be a pdf or an html file.  If it's a pdf, it will already have a pdf extension
     url = url + "/" + filePrefix[url] + fmz[5]
     if url[-4:].lower() !=  ".pdf": # If it's not already got a .pdf extension, add an .html extension
         url=url+".html"
@@ -300,23 +302,21 @@ for fmz in fanzineList:
         print("   *** File does not exist: "+url)
         continue
 
-    # print('    <tr>', file=f)
-    # line=""
-    # if fmz[0] != year:
-    #     year=fmz[0]
-    #     print('        <td>' + str(year) + '</td>', file=f)
-    # else:
-    #     print('        <td>&nbsp;</td>', file=f)
-
-    if fmz[1] != month:
-        month=fmz[1]
-        print('        <td>' + months[month]+" "+str(fmz[0]) + '</td>', file=f)
+    # Start the row
+    print('   <tr>', file=f)
+    # Put the month & year in the first column of the table only if it changes.
+    newMothYear=months[month]+" "+str(fmz[0])
+    if newMothYear != monthYear:
+        monthYear=newMothYear
+        print('      <td>' + newMothYear + '</td>', file=f)
     else:
-        print('        <td>&nbsp;</td>', file=f)
+        print('      <td>&nbsp;</td>', file=f)
 
+    # The hyperlink goes in column 2
     print('               <td>' + '<a href="./'+url+'">'+fmz[6]+'</a>' + '<td>', file=f)
 
-    print('    </tr>', file=f)
+    # And end the row
+    print('   </tr>', file=f)
 
 print('</table>', file=f)
 f.close()
