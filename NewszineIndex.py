@@ -235,6 +235,7 @@ months={1 : "January",
         12 : "December"}
 
 filePrefix={    # This deals with the arbitrary fanzine prefixes used on the website
+    # The key for each pair is the directory name, the value is the file prefix used in the LST files (which is replaced)
     "Ansible" : "Ansible",
     "Australian_SF_News" : "auss",
     "Axe" : "Axe",
@@ -272,7 +273,8 @@ filePrefix={    # This deals with the arbitrary fanzine prefixes used on the web
     "STEFCARD" : "STEFCARD",
     "Swefanac" : "SWE",
     "Thyme" : "Thyme",
-    "Tympany" : "Tympany"
+    "Tympany" : "Tympany",
+    "Winnie" : "Winnie"
 }
 
 f=open("../newszinestable.txt", "w")
@@ -285,11 +287,12 @@ for fmz in fanzineList:
 
     url=lstNameToDirNameMap[os.path.splitext(fmz[3])[0]]        # Directory name
     try:
-        url = url + "/" + filePrefix[url] + fmz[5]
+        filePrefix[url]
     except:
-        print("   *** Probable URL failure.  fmz="+str(fmz))
+        print("   *** filePrefix lookup failure for '"+url+"'")
         continue
 
+    url = url + "/" + filePrefix[url] + fmz[5]
     if url[-4:].lower() !=  ".pdf": # If it's not already got a .pdf extension, add an .html extension
         url=url+".html"
 
