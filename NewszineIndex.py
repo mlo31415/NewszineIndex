@@ -297,17 +297,17 @@ for fmz in fanzineList:
         print("   *** File does not exist: "+url)
         continue
 
-    print('    <tr>', file=f)
-    line=""
-    if fmz[0] != year:
-        year=fmz[0]
-        print('        <td>' + str(year) + '</td>', file=f)
-    else:
-        print('        <td>&nbsp;</td>', file=f)
+    # print('    <tr>', file=f)
+    # line=""
+    # if fmz[0] != year:
+    #     year=fmz[0]
+    #     print('        <td>' + str(year) + '</td>', file=f)
+    # else:
+    #     print('        <td>&nbsp;</td>', file=f)
 
     if fmz[1] != month:
         month=fmz[1]
-        print('        <td>' + months[month] + '</td>', file=f)
+        print('        <td>' + months[month]+" "+str(fmz[0]) + '</td>', file=f)
     else:
         print('        <td>&nbsp;</td>', file=f)
 
