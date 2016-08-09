@@ -257,6 +257,7 @@ filePrefix={    # This deals with the arbitrary fanzine prefixes used on the web
     "Fantasy_News" : "Fantasy_News",
     "Fantasy_News_NewSeries" : "fn",
     "Fantasy_Times" : "Fantasy_Times",
+    "FFF" : "FanFic_Field",
     "Fiawol" : "Fiawol",
     "File770" : "File770",
     "Focal_Point" : "Focal_Point",
@@ -266,6 +267,7 @@ filePrefix={    # This deals with the arbitrary fanzine prefixes used on the web
     "MidWest_Fan_News" : "MidWest_Fan_News",
     "Nebula" : "Nebula",
     "NEOSFS" : "NEOSFS",
+    "Newfangles" : "Newfangles",
     "Norstrilian_News" : "Norstrilian_News",
     "Organlegger" : "Organlegger",
     "Phan" : "Phan",
@@ -280,7 +282,6 @@ filePrefix={    # This deals with the arbitrary fanzine prefixes used on the web
     "SF_News" : "SF_News",
     "SF_Newscope" : "sfn",
     "SF_Chronicle" : "sfc",
-    "SFTimes_German" : "SFTimes_German",
     "SFinctor" : "SFinctor",
     "SFNL-RichardWilson" : "SFNL",
     "SFTimes_German" : "SFTimes_German",
@@ -312,7 +313,8 @@ for fmz in fanzineList:
     try:
         filePrefix[url]     # We need to make sure that this fanzine is in the filePrefix table.
     except:
-        print("   *** '"+url+"' is missing from the filePrefix table")
+        print("   *** '"+str(url)+"' is missing from the filePrefix table")
+        print("        fmz="+str(fmz))
         continue
 
     # The file on disk can be a pdf or an html file.  If it's a pdf, it will already have a pdf extension
