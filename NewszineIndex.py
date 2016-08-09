@@ -327,20 +327,20 @@ for fmz in fanzineList:
         continue
 
     # Start the row
-    print('   <tr>', file=f)
+    print('  <tr>', file=f)
     # Put the month & year in the first column of the table only if it changes.
     newMothYear=str(months[fmz[1]])+" "+str(fmz[0])
     if newMothYear != monthYear:
         monthYear=newMothYear
-        print('      <td>' + newMothYear + '</td>', file=f)
+        print('    <td>' + newMothYear + '</td>', file=f)
     else:
-        print('      <td>&nbsp;</td>', file=f)
+        print('    <td>&nbsp;</td>', file=f)
 
     # The hyperlink goes in column 2
-    print('               <td>' + '<a href="./'+url+'">'+fmz[6]+'</a>' + '<td>', file=f)
+    print('        <td>' + '<a href="./'+url+'">'+fmz[6]+'</a>' + '</td>', file=f)
 
     # And end the row
-    print('   </tr>', file=f)
+    print('  </tr>', file=f)
 
 print('</table>', file=f)
 f.close()
