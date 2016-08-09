@@ -301,7 +301,7 @@ filePrefix={    # This deals with the arbitrary fanzine prefixes used on the web
 }
 
 f=open("../newszinestable.txt", "w")
-print('<table border="1">', file=f)
+print('<table border="2">', file=f) # Begin the main table
 
 fanzineList=sorted(fanzineList, key=operator.itemgetter(0, 1))
 monthYear=""
@@ -327,21 +327,25 @@ for fmz in fanzineList:
         continue
 
     # Start the row
-    print('  <tr>', file=f)
     # Put the month & year in the first column of the table only if it changes.
     newMothYear=str(months[fmz[1]])+" "+str(fmz[0])
     if newMothYear != monthYear:
+        if monthYear != "":   # Is this the first month box?
+            print('</table></td></tr>', file=f)  # No.  So end the previous month box
+
+        print('<tr><td><table border="0">', file=f)    # Start a new month box
         monthYear=newMothYear
-        print('    <td>' + newMothYear + '</td>', file=f)
+        print('    <tr><td width="120">' + newMothYear + '</td>', file=f)
     else:
-        print('    <td>&nbsp;</td>', file=f)
+        print('    <tr><td width="120">&nbsp;</td>', file=f)        # Add an empty month box
 
     # The hyperlink goes in column 2
-    print('        <td>' + '<a href="./'+url+'">'+fmz[6]+'</a>' + '</td>', file=f)
+    print('        <td width="250">' + '<a href="./'+url+'">'+fmz[6]+'</a>' + '</td>', file=f)
 
     # And end the row
     print('  </tr>', file=f)
 
+print("</table></td></tr>", file=f)
 print('</table>', file=f)
 f.close()
 
